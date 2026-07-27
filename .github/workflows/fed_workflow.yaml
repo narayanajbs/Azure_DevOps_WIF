@@ -33,7 +33,7 @@ jobs:
         with:
           inlineScript: |
             az group create \
-              --name rg-11am-azure-demo \
+              --name rg-oidc-azure-demo \
               --location centralindia \
               --tags Authentication=OIDC CreatedBy=GitHubActions
 
