@@ -1,0 +1,46 @@
+name: Azure OIDC Federated Credential Demo
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  azure-demo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Login to Azure using OIDC
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Display Azure account
+        uses: azure/cli@v2
+        with:
+          inlineScript: |
+            az account show --output table
+
+      - name: Create OIDC demo resource group
+        uses: azure/cli@v2
+        with:
+          inlineScript: |
+            az group create \
+              --name rg-11am-azure-demo \
+              --location centralindia \
+              --tags Authentication=OIDC CreatedBy=GitHubActions
+
+      - name: Verify resource group
+        uses: azure/cli@v2
+        with:
+          inlineScript: |
+            az group show \
+              --name rg-11am-azure-demo \
+              --output table
