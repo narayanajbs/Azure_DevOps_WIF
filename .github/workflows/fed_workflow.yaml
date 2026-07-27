@@ -42,5 +42,5 @@ jobs:
         with:
           inlineScript: |
             az group show \
-              --name rg-11am-azure-demo \
+              --name rg-oidc-azure-demo \
               --output table
